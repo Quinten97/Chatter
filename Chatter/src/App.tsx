@@ -3,21 +3,27 @@ import { ChatScreen } from "./screens/chat/ChatScreen";
 import { HomeScreen } from "./screens/home/Home";
 import { LoadingScreen } from "./screens/loading/Loading";
 import { NewChatScreen } from "./screens/newchat/NewChat";
+import { loadCharacter } from "./utils/characterStorage";
+import { CharacterProps } from "./utils/characterStorage";
 
 export interface ScreenProps {
   setScreen: (screen: string) => void;
+  setCharacter?: (character: CharacterProps) => void;
+  character?: CharacterProps | null;
 }
 
 function App() {
   const [screen, setScreen] = useState<string>("loading");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [character, setCharacter] = useState<CharacterProps | null>(null);
 
   useEffect(() => {
-    // Simulate fetching data (e.g., localStorage, API calls, etc.)
+    const storedCharacter = loadCharacter();
+    setCharacter(storedCharacter);
     setTimeout(() => {
-      setIsLoading(false); // Set loading to false once data is retrieved
-      setScreen("home"); // Navigate to home screen
-    }, 2000); // Simulating a 2-second delay
+      setIsLoading(false);
+      setScreen("home");
+    }, 2000);
   }, []);
 
   return (
@@ -25,11 +31,15 @@ function App() {
       {isLoading ? (
         <LoadingScreen />
       ) : screen === "home" ? (
-        <HomeScreen setScreen={setScreen} />
+        <HomeScreen
+          setScreen={setScreen}
+          character={character}
+          setCharacter={setCharacter}
+        />
       ) : screen === "newChat" ? (
-        <NewChatScreen setScreen={setScreen} />
+        <NewChatScreen setScreen={setScreen} setCharacter={setCharacter} />
       ) : screen === "chat" ? (
-        <ChatScreen setScreen={setScreen} />
+        <ChatScreen setScreen={setScreen} character={character} />
       ) : null}
     </>
   );

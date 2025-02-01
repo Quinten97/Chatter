@@ -3,7 +3,7 @@ import placeholder from "../../assets/Headshot-Placeholder.png";
 import { ScreenProps } from "../../App";
 import "./chatscreen.css";
 
-export const ChatScreen: React.FC<ScreenProps> = ({ setScreen }) => {
+export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
   function textAreaAdjust(element: HTMLTextAreaElement) {
     element.style.height = "7%";
     if (element.value.trim() === "") {
@@ -18,8 +18,8 @@ export const ChatScreen: React.FC<ScreenProps> = ({ setScreen }) => {
       <BackButton setScreen={setScreen} whichScreen="home" />
       <div className="chat-container">
         <div className="chat-header">
-          <img src={placeholder} className="chat-image" />
-          <p className="character-name">character name</p>
+          <img src={character?.image || placeholder} className="chat-image" />
+          <p className="character-name">{character?.name}</p>
         </div>
         <div className="chat-body">
           <textarea

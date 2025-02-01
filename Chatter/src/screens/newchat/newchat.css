@@ -6,12 +6,24 @@
   justify-content: center;
 }
 
-.new-chat-image {
+.new-chat-image-wrapper {
   margin-bottom: 2.5rem;
-  width: 50%;
+  width: 60%; /* Controls the width of the container */
+  height: 28%; /* Fixed height for the container */
   background-color: grey;
   border-radius: 0.5rem;
+  overflow: hidden; /* Ensure the image doesn't overflow out of the container */
+}
+
+.new-chat-image {
+  width: 100%; /* Make the image fill the entire container's width */
+  height: 100%; /* Make the image fill the entire container's height */
+  object-fit: cover; /* Ensures the image covers the container without distortion */
   filter: drop-shadow(0 5px 4px rgba(0, 0, 0, 0.25));
+}
+
+input[type="file"] {
+  display: none; /* Hide the actual file input */
 }
 
 .new-chat-input {

@@ -2,7 +2,7 @@ import "./home.css";
 import placeholder from "../../assets/Headshot-Placeholder.png";
 import { ScreenProps } from "../../App";
 
-export const HomeScreen: React.FC<ScreenProps> = ({ setScreen }) => {
+export const HomeScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
   return (
     <div className="home-body">
       <h1 className="home-header">Chatter AI</h1>
@@ -14,7 +14,7 @@ export const HomeScreen: React.FC<ScreenProps> = ({ setScreen }) => {
           Continue
         </button>
         <img
-          src={placeholder}
+          src={character?.image || placeholder}
           alt="current chat character image"
           className="character-image"
         />
