@@ -1,11 +1,12 @@
 import "./newchat.css";
 import placeholder from "../../assets/Headshot-Placeholder.png";
 import { BackButton } from "../../components/BackButton";
+import { ScreenProps } from "../../App";
 
-export const NewChatScreen = () => {
+export const NewChatScreen: React.FC<ScreenProps> = ({ setScreen }) => {
   return (
     <>
-      <BackButton />
+      <BackButton setScreen={setScreen} whichScreen={"home"} />
       <div className="new-chat-container">
         <img
           src={placeholder}
@@ -33,7 +34,7 @@ export const NewChatScreen = () => {
         <button
           className="new-chat-button"
           onClick={() => {
-            console.log("start chat");
+            setScreen("chat");
           }}
         >
           Start Chatting

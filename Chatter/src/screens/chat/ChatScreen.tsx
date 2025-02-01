@@ -1,21 +1,21 @@
 import { BackButton } from "../../components/BackButton";
 import placeholder from "../../assets/Headshot-Placeholder.png";
-
+import { ScreenProps } from "../../App";
 import "./chatscreen.css";
 
-export const ChatScreen = () => {
+export const ChatScreen: React.FC<ScreenProps> = ({ setScreen }) => {
   function textAreaAdjust(element: HTMLTextAreaElement) {
-    element.style.height = "7%"; // Reset height to shrink if needed
+    element.style.height = "7%";
     if (element.value.trim() === "") {
-      element.style.height = "7%"; // Set back to original height when empty
+      element.style.height = "7%";
     } else {
-      element.style.height = `${element.scrollHeight}px`; // Expand based on content
+      element.style.height = `${element.scrollHeight}px`;
     }
   }
 
   return (
     <>
-      <BackButton />
+      <BackButton setScreen={setScreen} whichScreen="home" />
       <div className="chat-container">
         <div className="chat-header">
           <img src={placeholder} className="chat-image" />
