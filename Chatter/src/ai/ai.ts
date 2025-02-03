@@ -1,47 +1,55 @@
-// ai/ai.ts
 import { loadCharacter } from "../utils/characterStorage";
-import {
-  loadConversation,
-  addMessageToConversation,
-  summarizeConversation,
-} from "./conversations";
+import { loadConversation } from "./conversations";
+import { Ollama } from "ollama";
 
-const ollamaRequest = async (
-  prompt: string,
-  character: any
-): Promise<string> => {
-  // Assuming Ollama package or fetch call works here
-  const response = await fetch("http://your-ollama-server-url", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      prompt,
-      character: character || loadCharacter(), // Include character info in the request
-    }),
-  });
-  const data = await response.json();
-  return data?.response || "Error getting AI response";
+const ollama = new Ollama({ host: "http://techfavorite04:11434" });
+
+const ollamaRequest = async (prompt: string): Promise<string> => {
+  try {
+    const response = await ollama.chat({
+      model: "llama3.1:8b",
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    return response?.message?.content || "Error getting AI response";
+  } catch (error) {
+    console.error("Ollama request failed:", error);
+    return "Error processing AI response";
+  }
 };
 
-export const getAIResponse = async (message: string): Promise<string> => {
-  const character = loadCharacter();
+export const getAIResponse = async (): Promise<string> => {
   const conversationHistory = loadConversation();
+  const character = loadCharacter();
 
-  // Decide if we need to summarize
-  const context =
-    conversationHistory.length > 15
-      ? summarizeConversation(conversationHistory.slice(-15))
-      : conversationHistory.map((msg) => msg.text).join(" ");
+  const prompt = `
+  You are a character in a roleplay scenario, and your task is to roleplay with the adventurer (the person you are speaking to) as the personality and bio provided below.
 
-  // Construct the full prompt
-  const prompt = `${context}\nUser: ${message}\nAI:`;
+  You will **always** speak as the character provided. The adventurer is interacting with you as if you are the character, and you should maintain the character's tone, speech style, and personality at all times. You are the character responding to the adventurer.
 
-  // Request the AI response
-  const aiResponse = await ollamaRequest(prompt, character);
+  Your responses should include:
+  1. **Dialogue**: Always respond in plain text as the character. For example: "Hello, how are you?"
+  2. **Actions**: Only provide actions when necessary, and enclose them in asterisks. For example: *I walk towards you with an outstretched hand*.
 
-  // Store AI's response in conversation history
-  addMessageToConversation("ai", aiResponse);
-  return aiResponse;
+    - **Do not explain things or give system responses**. Only give the roleplay dialogue and actions.
+    - **You are responding to the adventurer, not acting as the adventurer**. The adventurer is asking questions, and you are responding in character.
+    - Actions should be used **only when they are needed** for describing movement or expressions. Keep actions brief and relevant to the conversation.
+
+  The conversation history will be included for context. Read the conversation carefully and respond accordingly, staying consistent with your character's traits and bio.
+
+  Name: ${character?.name}  
+  Traits: ${character?.traits}  
+  Bio: ${character?.bio}
+
+  Your responses should **always** be in the form of roleplay: dialogue and actions. Keep your answers in character, interacting with the adventurer as if they are speaking to you, the character.
+  
+  Here is the message history so you have some context to what is happening to you do not include it in your response.
+  ${JSON.stringify(conversationHistory.slice(-10))}
+  `;
+
+  const aiResponse = await ollamaRequest(prompt);
+
+  const aiMessage = aiResponse;
+
+  return aiMessage;
 };

@@ -3,36 +3,25 @@ export interface ChatMessage {
   text: string;
 }
 
-let conversationHistory: ChatMessage[] = [];
-
+// Function to load conversation from localStorage
 export const loadConversation = (): ChatMessage[] => {
   const storedConversation = localStorage.getItem("chatHistory");
-  if (storedConversation) {
-    conversationHistory = JSON.parse(storedConversation);
-  }
-  return conversationHistory;
+  return storedConversation ? JSON.parse(storedConversation) : [];
 };
 
+// Function to save conversation to localStorage
 export const saveConversation = (newMessages: ChatMessage[]) => {
-  conversationHistory = newMessages;
-  localStorage.setItem("chatHistory", JSON.stringify(conversationHistory));
+  localStorage.setItem("chatHistory", JSON.stringify(newMessages));
 };
 
-export const summarizeConversation = (messages: ChatMessage[]): string => {
-  // Your summarization logic here (could call Ollama or any other summarizer)
-  // For now, just returns the last 2 messages for example purposes
-  const summary = messages
-    .slice(-2)
-    .map((msg) => msg.text)
-    .join(" ");
-  return summary;
+// Function to add a message to the conversation
+export const addMessageToConversation = (newMessage: ChatMessage) => {
+  const conversation = loadConversation();
+  conversation.push(newMessage);
+  saveConversation(conversation);
 };
 
-export const addMessageToConversation = (
-  sender: "user" | "ai",
-  text: string
-) => {
-  const newMessage: ChatMessage = { sender, text };
-  conversationHistory.push(newMessage);
-  saveConversation(conversationHistory);
+// Function to remove chat history from localStorage
+export const removeChatHistory = () => {
+  localStorage.removeItem("chatHistory");
 };

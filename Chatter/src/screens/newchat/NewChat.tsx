@@ -1,9 +1,10 @@
 import "./newchat.css";
 import placeholder from "../../assets/Headshot-Placeholder.png";
-import { BackButton } from "../../components/BackButton";
+import { BackButton } from "../../components/backbutton/BackButton";
 import { ScreenProps } from "../../App";
 import { useState } from "react";
 import { saveCharacter } from "../../utils/characterStorage";
+import { removeChatHistory } from "../../ai/conversations";
 
 export const NewChatScreen: React.FC<ScreenProps> = ({
   setScreen,
@@ -42,6 +43,7 @@ export const NewChatScreen: React.FC<ScreenProps> = ({
     if (setCharacter) {
       setCharacter(newCharacter);
     }
+    removeChatHistory();
     setScreen("chat");
   };
 

@@ -33,7 +33,7 @@
   height: 60%;
   width: 100%;
   background-color: white;
-  overflow-y: auto;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   padding: 10px;
