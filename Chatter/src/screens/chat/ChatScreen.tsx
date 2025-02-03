@@ -1,17 +1,35 @@
+import { useState } from "react";
 import { BackButton } from "../../components/BackButton";
 import placeholder from "../../assets/Headshot-Placeholder.png";
 import { ScreenProps } from "../../App";
 import "./chatscreen.css";
+import {
+  loadConversation,
+  addMessageToConversation,
+} from "../../ai/conversations";
+import { getAIResponse } from "../../ai/ai";
 
 export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
-  function textAreaAdjust(element: HTMLTextAreaElement) {
-    element.style.height = "7%";
-    if (element.value.trim() === "") {
-      element.style.height = "7%";
-    } else {
-      element.style.height = `${element.scrollHeight}px`;
-    }
-  }
+  const [userMessage, setUserMessage] = useState("");
+  const [messages, setMessages] = useState(loadConversation()); // Load previous conversation history
+
+  const handleUserMessage = async () => {
+    if (!userMessage.trim()) return;
+
+    // Store the user's message in conversation
+    addMessageToConversation("user", userMessage);
+    setMessages(loadConversation()); // Refresh the messages state to show user message
+
+    // Get the AI response
+    const aiResponse = await getAIResponse(userMessage);
+
+    // Add the AI response to the messages and update the state
+    addMessageToConversation("ai", aiResponse);
+    setMessages(loadConversation()); // Refresh messages again after the AI response
+
+    // Clear input field
+    setUserMessage("");
+  };
 
   return (
     <>
@@ -22,17 +40,25 @@ export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
           <p className="character-name">{character?.name}</p>
         </div>
         <div className="chat-body">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`chat-message ${
+                msg.sender === "user" ? "user-message" : "ai-message"
+              }`}
+            >
+              <p>{msg.text}</p>
+            </div>
+          ))}
+        </div>
+        <div className="message-container">
           <textarea
-            onChange={(e) => textAreaAdjust(e.currentTarget)}
+            value={userMessage}
+            onChange={(e) => setUserMessage(e.target.value)}
             className="message-input"
             placeholder="Type something..."
           />
-          <button
-            className="send-chat"
-            onClick={() => {
-              console.log("chat sent!");
-            }}
-          >
+          <button className="send-chat" onClick={handleUserMessage}>
             {"->"}
           </button>
         </div>
