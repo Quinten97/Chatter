@@ -8,7 +8,7 @@ const ollamaRequest = async (prompt: string): Promise<string> => {
   console.log(import.meta.env.VITE_AI_ENDPOINT);
   try {
     const response = await ollama.chat({
-      model: "SmolLM2:135m",
+      model: "mistral:7b",
       messages: [{ role: "user", content: prompt }],
     });
 
