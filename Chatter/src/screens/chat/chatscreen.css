@@ -68,6 +68,16 @@
   width: 20%;
   height: 100%;
   border-radius: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #8c52ff;
+  border: none;
+}
+
+.send-chat img {
+  width: 30%;
+  transform: rotate(50deg);
 }
 
 .send-chat:focus {

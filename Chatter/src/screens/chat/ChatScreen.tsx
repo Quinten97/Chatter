@@ -10,7 +10,8 @@ import {
 } from "../../ai/conversations";
 import { getAIResponse } from "../../ai/ai";
 import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
-
+import SendArrow from "../../assets/send arrow.svg";
+import { DownloadChat } from "../../components/downloadchat/DownloadChat";
 // Function to handle user message input
 const handleUserMessage = async (
   userMessage: string,
@@ -62,6 +63,7 @@ export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
   return (
     <>
       <BackButton setScreen={setScreen} whichScreen="home" />
+      <DownloadChat />
       <div className="chat-container">
         <div className="chat-header">
           <img src={character?.image || placeholder} className="chat-image" />
@@ -102,7 +104,7 @@ export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
               )
             }
           >
-            {"->"}
+            <img src={SendArrow} alt="" />
           </button>
         </div>
       </div>

@@ -77,15 +77,13 @@ export const NewChatScreen: React.FC<ScreenProps> = ({
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <input
-          type="text"
+        <textarea
           placeholder="Traits"
           className="new-chat-input large-input"
           value={traits}
           onChange={(e) => setTraits(e.target.value)}
         />
-        <input
-          type="text"
+        <textarea
           placeholder="Bio"
           className="new-chat-input large-input"
           value={bio}

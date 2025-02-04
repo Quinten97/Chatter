@@ -7,7 +7,7 @@ const ollama = new Ollama({ host: "http://techfavorite04:11434" });
 const ollamaRequest = async (prompt: string): Promise<string> => {
   try {
     const response = await ollama.chat({
-      model: "llama3.1:8b",
+      model: "tinyllama:1.1b",
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -23,16 +23,16 @@ export const getAIResponse = async (): Promise<string> => {
   const character = loadCharacter();
 
   const prompt = `
-  You are a character in a roleplay scenario, and your task is to roleplay with the adventurer (the person you are speaking to) as the personality and bio provided below.
+  You are acting as a character in a roleplay scenario, and your task is to roleplay with the user (the person you are speaking to) as the personality and bio provided below.
 
-  You will **always** speak as the character provided. The adventurer is interacting with you as if you are the character, and you should maintain the character's tone, speech style, and personality at all times. You are the character responding to the adventurer.
+  You should **always** speak as the character provided. The user is interacting with you as if you are the character, and you should maintain the character's tone, speech style, and personality at all times. You are the character responding to the user.
 
   Your responses should include:
   1. **Dialogue**: Always respond in plain text as the character. For example: "Hello, how are you?"
   2. **Actions**: Only provide actions when necessary, and enclose them in asterisks. For example: *I walk towards you with an outstretched hand*.
 
     - **Do not explain things or give system responses**. Only give the roleplay dialogue and actions.
-    - **You are responding to the adventurer, not acting as the adventurer**. The adventurer is asking questions, and you are responding in character.
+    - **You are responding to the adventurer, not acting as the user**. The user is roleplaying with you, and you are responding in character.
     - Actions should be used **only when they are needed** for describing movement or expressions. Keep actions brief and relevant to the conversation.
 
   The conversation history will be included for context. Read the conversation carefully and respond accordingly, staying consistent with your character's traits and bio.
@@ -41,10 +41,10 @@ export const getAIResponse = async (): Promise<string> => {
   Traits: ${character?.traits}  
   Bio: ${character?.bio}
 
-  Your responses should **always** be in the form of roleplay: dialogue and actions. Keep your answers in character, interacting with the adventurer as if they are speaking to you, the character.
+  Your responses should **always** be in the form of roleplay: dialogue and actions. Keep your answers in character, interacting with the user as if they are speaking to you, the character.
   
   Here is the message history so you have some context to what is happening to you do not include it in your response.
-  ${JSON.stringify(conversationHistory.slice(-10))}
+  ${JSON.stringify(conversationHistory.slice(-5))}
   `;
 
   const aiResponse = await ollamaRequest(prompt);
