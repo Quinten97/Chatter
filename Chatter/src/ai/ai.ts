@@ -2,12 +2,13 @@ import { loadCharacter } from "../utils/characterStorage";
 import { loadConversation } from "./conversations";
 import { Ollama } from "ollama";
 
-const ollama = new Ollama({ host: "http://techfavorite04:11434" });
+const ollama = new Ollama({ host: `${import.meta.env.VITE_AI_ENDPOINT}` });
 
 const ollamaRequest = async (prompt: string): Promise<string> => {
+  console.log(import.meta.env.VITE_AI_ENDPOINT);
   try {
     const response = await ollama.chat({
-      model: "tinyllama:1.1b",
+      model: "SmolLM2:135m",
       messages: [{ role: "user", content: prompt }],
     });
 
