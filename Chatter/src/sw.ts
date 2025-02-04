@@ -1,11 +1,18 @@
+/// <reference lib="webworker" />
+
 self.addEventListener("install", (event) => {
-  console.log("Service worker installing...");
+  const swEvent = event as ExtendableEvent;
+  console.log("Service Worker installed.");
+  swEvent.waitUntil(Promise.resolve()); // Example of ExtendableEvent usage
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("Service worker activated!");
+  const swEvent = event as ExtendableEvent;
+  console.log("Service Worker activated.");
+  swEvent.waitUntil(Promise.resolve());
 });
 
 self.addEventListener("fetch", (event) => {
-  console.log("Fetching:", event.request.url);
+  const fetchEvent = event as FetchEvent;
+  console.log("Fetching:", fetchEvent.request.url);
 });

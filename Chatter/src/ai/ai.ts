@@ -1,6 +1,6 @@
 import { loadCharacter } from "../utils/characterStorage";
 import { loadConversation } from "./conversations";
-import { Ollama } from "ollama";
+import { Ollama } from "ollama/browser";
 
 const ollama = new Ollama({ host: `${import.meta.env.VITE_AI_ENDPOINT}` });
 
