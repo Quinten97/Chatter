@@ -5,10 +5,9 @@ import { Ollama } from "ollama/browser";
 const ollama = new Ollama({ host: `${import.meta.env.VITE_AI_ENDPOINT}` });
 
 const ollamaRequest = async (prompt: string): Promise<string> => {
-  console.log(import.meta.env.VITE_AI_ENDPOINT);
   try {
     const response = await ollama.chat({
-      model: "mistral:7b",
+      model: "SmolLM2:135m",
       messages: [{ role: "user", content: prompt }],
     });
 
