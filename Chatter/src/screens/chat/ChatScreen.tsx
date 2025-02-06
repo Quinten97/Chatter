@@ -22,7 +22,7 @@ const handleUserMessage = async (
   if (!userMessage.trim()) return;
 
   // Store user message in localStorage
-  const userMessageObj: ChatMessage = { sender: "user", text: userMessage };
+  const userMessageObj: ChatMessage = { role: "user", content: userMessage };
   addMessageToConversation(userMessageObj);
 
   // Update state immediately with the new message
@@ -38,7 +38,7 @@ const handleUserMessage = async (
   const aiResponse = await getAIResponse();
 
   // Save updated conversation to localStorage
-  const aiMessageObj: ChatMessage = { sender: "ai", text: aiResponse };
+  const aiMessageObj: ChatMessage = { role: "assistant", content: aiResponse };
   addMessageToConversation(aiMessageObj);
 
   // Update state immediately with the new message
@@ -50,15 +50,26 @@ const handleUserMessage = async (
 
 export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
   const [userMessage, setUserMessage] = useState("");
-  const [messages, setMessages] = useState(loadConversation()); // Load conversation from localStorage
-  const [loading, setLoading] = useState(false); // Loading state
+  const [messages, setMessages] = useState(loadConversation());
+  const [loading, setLoading] = useState(false);
   const chatBodyRef = useRef<HTMLDivElement>(null);
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (chatBodyRef.current) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }
-  }, [messages]);
+    const handleResize = () => {
+      if (chatBodyRef.current) {
+        chatBodyRef.current.style.height = `${
+          window.innerHeight - messageContainerRef.current!.offsetHeight
+        }px`;
+      }
+      window.addEventListener("resize", handleResize);
+      handleResize();
+      return () => window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -74,19 +85,19 @@ export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
             <div
               key={index}
               className={`chat-message ${
-                msg.sender === "user" ? "user" : "ai"
+                msg.role === "user" ? "user" : "assistant"
               }`}
             >
-              <p>{msg.text}</p>
+              <p>{msg.content}</p>
             </div>
           ))}
           {loading && (
-            <div className="chat-message ai">
+            <div className="chat-message assistant">
               <LoadingSpinner />
             </div>
           )}
         </div>
-        <div className="message-container">
+        <div className="message-container" ref={messageContainerRef}>
           <textarea
             value={userMessage}
             onChange={(e) => setUserMessage(e.target.value)}

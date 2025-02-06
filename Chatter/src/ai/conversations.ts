@@ -1,6 +1,6 @@
 export interface ChatMessage {
-  sender: "user" | "ai";
-  text: string;
+  role: "user" | "assistant" | "system";
+  content: string;
 }
 
 // Function to load conversation from localStorage
