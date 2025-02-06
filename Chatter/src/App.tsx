@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { ChatScreen } from "./screens/chat/ChatScreen";
 import { HomeScreen } from "./screens/home/Home";
-import { LoadingScreen } from "./screens/loading/Loading";
+// import { LoadingScreen } from "./screens/loading/Loading";
 import { NewChatScreen } from "./screens/newchat/NewChat";
 import { useState, useEffect } from "react";
 import { loadCharacter } from "./utils/characterStorage";
