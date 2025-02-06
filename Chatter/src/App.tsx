@@ -28,9 +28,9 @@ function App() {
     }, 2000);
   }, []);
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  // if (isLoading) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
     <Router>
