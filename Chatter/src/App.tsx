@@ -17,14 +17,14 @@ export interface ChatScreenProps {
 }
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [character, setCharacter] = useState<CharacterProps | null>(null);
 
   useEffect(() => {
     const storedCharacter = loadCharacter();
     setCharacter(storedCharacter);
     setTimeout(() => {
-      setIsLoading(false);
+      // setIsLoading(false);
     }, 2000);
   }, []);
 
