@@ -1,19 +1,23 @@
 import "./newchat.css";
 import placeholder from "../../assets/Headshot-Placeholder.png";
 import { BackButton } from "../../components/backbutton/BackButton";
-import { ScreenProps } from "../../App";
 import { useState } from "react";
-import { saveCharacter } from "../../utils/characterStorage";
+import { CharacterProps, saveCharacter } from "../../utils/characterStorage";
 import { removeChatHistory } from "../../ai/conversations";
+import { useNavigate } from "react-router-dom";
 
-export const NewChatScreen: React.FC<ScreenProps> = ({
-  setScreen,
+interface NewChatScreenProps {
+  setCharacter: (character: CharacterProps) => void;
+}
+
+export const NewChatScreen: React.FC<NewChatScreenProps> = ({
   setCharacter,
 }) => {
   const [name, setName] = useState("");
   const [traits, setTraits] = useState("");
   const [bio, setBio] = useState("");
   const [image, setImage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   // Handle Image Upload
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,16 +44,14 @@ export const NewChatScreen: React.FC<ScreenProps> = ({
     }
     const newCharacter = { name, traits, bio, image };
     saveCharacter(newCharacter);
-    if (setCharacter) {
-      setCharacter(newCharacter);
-    }
+    setCharacter(newCharacter);
     removeChatHistory();
-    setScreen("chat");
+    navigate("/chat");
   };
 
   return (
     <>
-      <BackButton setScreen={setScreen} whichScreen={"home"} />
+      <BackButton to="/home" />
       <div className="new-chat-container">
         <div
           onClick={triggerFileInput}
@@ -89,7 +91,10 @@ export const NewChatScreen: React.FC<ScreenProps> = ({
           value={bio}
           onChange={(e) => setBio(e.target.value)}
         />
-        <button className="new-chat-button" onClick={handleSaveCharacter}>
+        <button
+          className="new-chat-button"
+          onClick={() => handleSaveCharacter()}
+        >
           Start Chatting
         </button>
       </div>

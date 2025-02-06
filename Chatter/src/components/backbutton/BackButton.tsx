@@ -1,16 +1,16 @@
 import "./backbutton.css";
+import { useNavigate } from "react-router-dom";
 import BackArrow from "../../assets/back arrow.svg";
+
 interface BackButtonProps {
-  whichScreen: string;
-  setScreen: (screen: string) => void;
+  to: string;
 }
 
-export const BackButton: React.FC<BackButtonProps> = ({
-  whichScreen,
-  setScreen,
-}) => {
+export const BackButton: React.FC<BackButtonProps> = ({ to }) => {
+  const navigate = useNavigate();
+
   return (
-    <button className="back-button" onClick={() => setScreen(whichScreen)}>
+    <button className="back-button" onClick={() => navigate(to)}>
       <img src={BackArrow} alt="back button" />
     </button>
   );

@@ -1,20 +1,23 @@
-import { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { ChatScreen } from "./screens/chat/ChatScreen";
 import { HomeScreen } from "./screens/home/Home";
 import { LoadingScreen } from "./screens/loading/Loading";
 import { NewChatScreen } from "./screens/newchat/NewChat";
+import { useState, useEffect } from "react";
 import { loadCharacter } from "./utils/characterStorage";
 import { CharacterProps } from "./utils/characterStorage";
 
-export interface ScreenProps {
-  setScreen: (screen: string) => void;
-  setCharacter?: (character: CharacterProps) => void;
-  character?: CharacterProps | null;
+export interface ChatScreenProps {
+  character: CharacterProps | null;
 }
 
 function App() {
-  const [screen, setScreen] = useState<string>("loading");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [character, setCharacter] = useState<CharacterProps | null>(null);
 
   useEffect(() => {
@@ -22,26 +25,25 @@ function App() {
     setCharacter(storedCharacter);
     setTimeout(() => {
       setIsLoading(false);
-      setScreen("home");
     }, 2000);
   }, []);
 
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <>
-      {isLoading ? (
-        <LoadingScreen />
-      ) : screen === "home" ? (
-        <HomeScreen
-          setScreen={setScreen}
-          character={character}
-          setCharacter={setCharacter}
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomeScreen character={character} />} />
+        <Route
+          path="/newChat"
+          element={<NewChatScreen setCharacter={setCharacter} />}
         />
-      ) : screen === "newChat" ? (
-        <NewChatScreen setScreen={setScreen} setCharacter={setCharacter} />
-      ) : screen === "chat" ? (
-        <ChatScreen setScreen={setScreen} character={character} />
-      ) : null}
-    </>
+        <Route path="/chat" element={<ChatScreen character={character} />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 }
 

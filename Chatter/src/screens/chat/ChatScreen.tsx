@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { BackButton } from "../../components/backbutton/BackButton";
 import placeholder from "../../assets/Headshot-Placeholder.png";
-import { ScreenProps } from "../../App";
 import "./chatscreen.css";
 import {
   loadConversation,
@@ -12,12 +11,14 @@ import { getAIResponse } from "../../ai/ai";
 import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
 import SendArrow from "../../assets/send arrow.svg";
 import { DownloadChat } from "../../components/downloadchat/DownloadChat";
+import { ChatScreenProps } from "../../App";
+
 // Function to handle user message input
 const handleUserMessage = async (
   userMessage: string,
   setUserMessage: React.Dispatch<React.SetStateAction<string>>,
   setMessages: React.Dispatch<React.SetStateAction<any[]>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>> // Set loading state
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   if (!userMessage.trim()) return;
 
@@ -48,7 +49,7 @@ const handleUserMessage = async (
   setLoading(false);
 };
 
-export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
+export const ChatScreen: React.FC<ChatScreenProps> = ({ character }) => {
   const [userMessage, setUserMessage] = useState("");
   const [messages, setMessages] = useState(loadConversation());
   const [loading, setLoading] = useState(false);
@@ -73,7 +74,7 @@ export const ChatScreen: React.FC<ScreenProps> = ({ setScreen, character }) => {
 
   return (
     <>
-      <BackButton setScreen={setScreen} whichScreen="home" />
+      <BackButton to="/home" />
       <DownloadChat />
       <div className="chat-container">
         <div className="chat-header">
