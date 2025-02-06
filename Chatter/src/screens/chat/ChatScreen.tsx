@@ -22,17 +22,10 @@ const handleUserMessage = async (
 ) => {
   if (!userMessage.trim()) return;
 
-  // Store user message in localStorage
   const userMessageObj: ChatMessage = { role: "user", content: userMessage };
   addMessageToConversation(userMessageObj);
-
-  // Update state immediately with the new message
   setMessages(loadConversation());
-
-  // Clear input field
   setUserMessage("");
-
-  // Start loading
   setLoading(true);
 
   // Get AI response
@@ -70,7 +63,7 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ character }) => {
       handleResize();
       return () => window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [messages]);
 
   return (
     <>
