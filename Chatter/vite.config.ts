@@ -3,13 +3,12 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  base: "/",
+  base: "./",
   plugins: [
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      srcDir: "src",
-      filename: "sw.ts",
+      includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
         name: "Chatter AI",
         short_name: "Chatter",
