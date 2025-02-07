@@ -3,7 +3,8 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  base: "./",
+  base: "./", // Ensures assets are served relative to the root.
+  publicDir: "src", // The directory where the public assets are located.
   plugins: [
     react(),
     VitePWA({
@@ -30,7 +31,7 @@ export default defineConfig({
             type: "image/png",
           },
           {
-            src: "/apple-touch-icon.png",
+            src: "/public/apple-touch-icon.png",
             sizes: "180x180",
             type: "image/png",
           },
@@ -50,6 +51,9 @@ export default defineConfig({
             type: "image/x-icon",
           },
         ],
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,png,jpg,svg}"], // Ensure correct file types are precached
       },
       devOptions: {
         enabled: true,

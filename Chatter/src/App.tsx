@@ -32,8 +32,6 @@ function App() {
     return <LoadingScreen />;
   }
 
-  console.log("App is mounting1");
-
   return (
     <Router>
       <Routes>
