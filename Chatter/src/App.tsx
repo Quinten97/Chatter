@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { ChatScreen } from "./screens/chat/ChatScreen";
 import { HomeScreen } from "./screens/home/Home";
-// import { LoadingScreen } from "./screens/loading/Loading";
+import { LoadingScreen } from "./screens/loading/Loading";
 import { NewChatScreen } from "./screens/newchat/NewChat";
 import { useState, useEffect } from "react";
 import { loadCharacter } from "./utils/characterStorage";
@@ -17,20 +17,20 @@ export interface ChatScreenProps {
 }
 
 function App() {
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [character, setCharacter] = useState<CharacterProps | null>(null);
 
   useEffect(() => {
     const storedCharacter = loadCharacter();
     setCharacter(storedCharacter);
     setTimeout(() => {
-      // setIsLoading(false);
+      setIsLoading(false);
     }, 2000);
   }, []);
 
-  // if (isLoading) {
-  //   return <LoadingScreen />;
-  // }
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Router>
