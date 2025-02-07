@@ -29,7 +29,7 @@ if (Notification.permission === "granted") {
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.ts") // Make sure this points to your sw.js or sw.ts file after being compiled
+      .register("./sw.ts") // Make sure this points to your sw.js or sw.ts file after being compiled
       .then((registration) => {
         console.log(
           "Service Worker registered with scope:",
