@@ -16,7 +16,7 @@ export default defineConfig({
         description: "An AI-powered chatbot",
         theme_color: "#8c52ff",
         background_color: "#8c52ff",
-        display: "fullscreen",
+        display: "standalone",
         orientation: "portrait",
         start_url: ".",
         icons: [
