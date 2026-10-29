@@ -7,7 +7,7 @@ const ollama = new Ollama({ host: `${import.meta.env.VITE_AI_ENDPOINT}` });
 const ollamaRequest = async (messages: ChatMessage[]): Promise<string> => {
   try {
     const response = await ollama.chat({
-      model: "llama3.2:1b",
+      model: "gemma3:1b",
       messages: [...messages],
       keep_alive: "5m",
       options: {
